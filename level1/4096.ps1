@@ -14,8 +14,8 @@ $headers = @{
 'ContentLength' = 512
 }
 
-for($i=1; $i -le 1024; $i++){
-
+for($i=1; $i -le 10; $i++){
+    $progressPreference = 'silentlyContinue'
     $page = Invoke-WebRequest $url -Method Get -SessionVariable hodor;
 
     $parse = $page -split ' '
@@ -24,11 +24,9 @@ for($i=1; $i -le 1024; $i++){
 
     $body = @{'id'='3922';'holdthedoor'="holdthedoor";'key'=$match_key[1].replace("`"","")}
 
-    $IRM = Invoke-RestMethod -Method 'Post' -Uri $url -Body $body -Headers $headers -WebSession $hodor
-
-    Write-Host "Sendig vote " -NoNewline
-    Write-Host $i -NoNewline -ForegroundColor Red
-    write-host $IRM.ResponseHeadersVariable
+    $IRM = Invoke-WebRequest -Uri $url -Method 'Post' -Headers $headers -Body $body -WebSession $hodor
+    -join("sending vote ", $i, ": ")|Write-Host -NoNewline
+    write-host $IRM.StatusDescription -ForegroundColor Green
 }
 
-Write-Output "sucessfull voting"
+Write-Host "sucessfull voting"  -ForegroundColor DarkGreen
