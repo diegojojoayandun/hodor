@@ -22,16 +22,18 @@ $headers = @{
 
 for($i=1; $i -le 5; $i++){
 
+    $progressPreference = 'silentlyContinue'
     $page = Invoke-WebRequest $url -Method Get -SessionVariable hodor;
-    $elements_a = $page.ParsedHtml.getElementsByTagName('input') | ?{$_.getAttribute('type') -eq "hidden"} |
-    select -ExpandProperty outerHTML;
-    $parse = $elements_a -split " "
+
+    $parse = $page -split ' '
     $match_key = $parse -match 'value'
-    $match_key = $match_key -split "="
+    $match_key = $match_key -split '='
 
-    $body = @{'id'='3922';'holdthedoor'="holdthedoor";'key'=$match_key[1]}
+    $body = @{'id'='3922';'holdthedoor'="holdthedoor";'key'=$match_key[1].replace("`"","")}
 
-    $IRM = Invoke-RestMethod -Method 'Post' -Uri $url -Body $body -Headers $headers -WebSession $hodor
+    $IRM = Invoke-WebRequest -Uri $url -Method 'Post' -Headers $headers -Body $body -WebSession $hodor
+    -join("sending vote ", $i, ": ")|Write-Host -NoNewline
+    write-host $IRM.StatusDescription -ForegroundColor Green
 }
 
-Write-Output "sucessfull voting"
+Write-Host "sucessfull voting" -ForegroundColor DarkGreen
