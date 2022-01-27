@@ -7,8 +7,9 @@ This project is meant for educational purposes only
 Many online contests make gathering votes a part of their process for choosing winners. The problem is that a lot of them are designed with flaws…
 
 ## Language
-
     Powershell
+    Runs: Ubuntu 20.04 LTS
+    Powershell Version 7.1, 7.2
 
 ## Resources
 Read or watch:
