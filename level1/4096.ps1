@@ -9,7 +9,10 @@
 #-----------------------------------------
 
 $url = "http://158.69.76.135/level1.php";
-$headers = @{'Content-Type'= 'application/x-www-form-urlencoded';'ContentLength' = 512}
+$headers = @{
+'Content-Type'= 'application/x-www-form-urlencoded';
+'ContentLength' = 512
+}
 
 for($i=1; $i -le 4096; $i++){
 
