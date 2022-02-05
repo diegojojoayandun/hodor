@@ -7,21 +7,17 @@
 # here: http://158.69.76.135/level0.php.
 # Using WebRequest session (POST)
 #-----------------------------------------
-
-
 function Get-Vote_Count{
     $progressPreference = 'silentlyContinue'
     $page = Invoke-WebRequest $url -Method 'Get' -Headers $headers
     $parse = $page -split 'tr'
-    $match_key = $parse -match '2898'
+    $match_key = $parse -match '3922'
     $match_key = $match_key -split '<td>'
     $match_key = $match_key -replace '\n', ''
     $match_key = $match_key -replace '</td>', ''
     $match_key = $match_key -replace '>', ''
     $match_key = $match_key -replace  '</'
     $match_key = $match_key -split '\n'
-
-
     return $match_key[2]
 }
 
@@ -29,10 +25,9 @@ function Get-Vote_Count{
 $url = "http://158.69.76.135/level0.php";
 
 $sVoteData = @'
-id=2898
+id=3922
 holdthedoor=Submit
 '@
-
 
 $body = ConvertFrom-StringData -StringData $sVoteData
 $headers = @{'Content-Type'= 'application/x-www-form-urlencoded';'ContentLength' = 64}
