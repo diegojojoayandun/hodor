@@ -6,6 +6,8 @@ This project is meant for educational purposes only
 
 Many online contests make gathering votes a part of their process for choosing winners. The problem is that a lot of them are designed with flaws…
 
+"Hodor" it's taken from Game of Thrones and "Hodor" is a seemingly nonsense word, though in the process it became the name everyone calls him. It is derived from the phrase "hold the door", the words that Hodor heard during the seizure that mentally disabled him as a result of the future Bran Stark accidentally warging into his young self during a vision.
+
 ## Language
     Powershell & Python
     Runs: Ubuntu 20.04 LTS
