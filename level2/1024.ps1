@@ -12,6 +12,7 @@
 #-----------------------------------------
 
 $url = "http://158.69.76.135/level2.php";
+
 $headers = @{
 'User-Agent'='Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0';
 'referer'=$url;
@@ -19,9 +20,28 @@ $headers = @{
 'ContentLength' = 512
 }
 
+function Get-Vote_Count{
+    $progressPreference = 'silentlyContinue'
+    $page = Invoke-WebRequest $url -Method 'Get' -Headers $headers
+    $parse = $page -split 'tr'
+    $match_key = $parse -match '3922'
+    $match_key = $match_key -split '<td>'
+    $match_key = $match_key -replace '\n', ''
+    $match_key = $match_key -replace '</td>', ''
+    $match_key = $match_key -replace '>', ''
+    $match_key = $match_key -replace  '</'
+    $match_key = $match_key -split '\n'
 
-for($i=1; $i -le 5; $i++){
+    return $match_key[2]
+}
 
+
+$total = Get-Vote_Count
+if ($null -eq $total) {
+    $total = 0;
+}
+
+for($i = [int]$total; $i -lt 1024; $i++){
     $progressPreference = 'silentlyContinue'
     $page = Invoke-WebRequest $url -Method Get -SessionVariable hodor;
 
@@ -32,8 +52,8 @@ for($i=1; $i -le 5; $i++){
     $body = @{'id'='3922';'holdthedoor'="holdthedoor";'key'=$match_key[1].replace("`"","")}
 
     $IRM = Invoke-WebRequest -Uri $url -Method 'Post' -Headers $headers -Body $body -WebSession $hodor
-    -join("sending vote ", $i, ": ")|Write-Host -NoNewline
+    -join("sending vote ", ($i + 1), ": ")|Write-Host -NoNewline
     write-host $IRM.StatusDescription -ForegroundColor Green
 }
-
-Write-Host "sucessfull voting" -ForegroundColor DarkGreen
+$total = Get-Vote_Count
+-join("Hodor Successful Cheat Voting, Total ", $total, ": ")|Write-Host
