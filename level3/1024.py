@@ -3,7 +3,7 @@
 
 Requirements:
 
-    - tesseract: Google open source OCR
+    - GOCR OCR
     - bs4(beautifulSoup)
 """
 
@@ -20,7 +20,7 @@ user_agent = ("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) "
 
 header = {"User-Agent": user_agent, "referer": Url}
 
-data = {"id": "3923", "holdthedoor": "submit", "key": "", "captcha": ''}
+data = {"id": "3922", "holdthedoor": "submit", "key": "", "captcha": ''}
 
 reject = b"See you later hacker! [11]"
 
@@ -51,10 +51,10 @@ def read_captcha():
 
 
 def OCR():
-    """Executes tesseract OCR application"""
+    """Executes GOCR OCR application"""
 
-    exec('import subprocess; subprocess.call(["/usr/bin/tesseract", \
-        "/tmp/captcha.png", "/tmp/captcha"])')
+    exec('import subprocess; subprocess.call(["./gocr", \
+        "/tmp/captcha.png", "-o", "/tmp/captcha.txt"])')
 
 
 def get_count():
